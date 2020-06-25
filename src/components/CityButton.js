@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { incrementScore } from "../actions/scoreAction";
+import { reloadStreetView } from "../actions/streetViewAction";
 
 const CityButton = (props) => {
     const handleClick = (e) => {
@@ -9,6 +10,7 @@ const CityButton = (props) => {
         if (result === "true") {
             props.incrementScore();
         }
+        props.reloadStreetView();
     };
 
     const refreshPage = () => {
@@ -27,6 +29,7 @@ const CityButton = (props) => {
 
 const mapDispatchToProps = (dispatch, props) => ({
     incrementScore: () => dispatch(incrementScore()),
+    reloadStreetView: () => dispatch(reloadStreetView()),
 });
 
 export default connect(undefined, mapDispatchToProps)(CityButton);

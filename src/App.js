@@ -42,9 +42,11 @@ const initialCenter = {
 const App = (props) => {
     const [cityCoords, setCityCoords] = useState();
     const [cityChoices, setCityChoices] = useState();
+    const [toggleStreetView, setToggleStreetView] = useState();
 
     useEffect(() => {
         getCityCoords();
+        // setToggleStreetView(!!props.reloadStreetView);
     }, []);
 
     const getCityCoords = () => {
@@ -108,6 +110,7 @@ const App = (props) => {
                         zoom={7}
                         initialCenter={initialCenter}
                     >
+                        (
                         <StreetViewPanorama
                             position={cityCoords}
                             visible={true}
@@ -116,6 +119,7 @@ const App = (props) => {
                                 enableCloseButton: false,
                             }}
                         />
+                        )
                     </GoogleMap>
                 </LoadScript>
             </div>
@@ -139,6 +143,7 @@ const App = (props) => {
 
 const mapStateToProps = (state, props) => ({
     score: state.score,
+    reloadStreetView: state.reloadStreetView,
 });
 
 // const mapDispatchToProps = (dispatch, props) => ({
