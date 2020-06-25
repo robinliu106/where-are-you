@@ -66,20 +66,29 @@ const App = (props) => {
         );
     };
 
+    const shuffleCityList = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * i);
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    };
+
     const generateCityChoices = (randomCity) => {
         const remainingCities = cityList.filter((city) => {
             return city !== randomCity;
         });
+
+        const shuffledRemainingCities = shuffleCityList(remainingCities);
 
         const cities = [];
         cities.push({ city: randomCity, answer: randomCity });
 
         for (let i = 0; i < 2; i++) {
             cities.push({
-                city:
-                    remainingCities[
-                        Math.floor(Math.random() * remainingCities.length)
-                    ],
+                city: shuffledRemainingCities[i],
                 answer: randomCity,
             });
         }
