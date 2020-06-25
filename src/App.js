@@ -3,8 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import generateRandomPoint from "./api/generateRandomPoint";
 import { connect } from "react-redux";
-import { incrementScore } from "./actions/scoreAction";
-
+import CityButton from "./components/CityButton";
 import {
     StreetViewService,
     StreetViewPanorama,
@@ -42,6 +41,7 @@ const initialCenter = {
 
 const App = (props) => {
     const [cityCoords, setCityCoords] = useState();
+    const [cityChoices, setCityChoices] = useState();
 
     useEffect(() => {
         getCityCoords();
@@ -58,12 +58,36 @@ const App = (props) => {
                 const randomPoint = generateRandomPoint({ lat, lng }, 100);
 
                 setCityCoords(randomPoint);
+                generateCityChoices(randomCity);
             },
             (error) => {
                 console.error(error);
             }
         );
     };
+
+    const generateCityChoices = (randomCity) => {
+        const remainingCities = cityList.filter((city) => {
+            return city !== randomCity;
+        });
+
+        const cities = [];
+        cities.push({ city: randomCity, answer: randomCity });
+
+        for (let i = 0; i < 2; i++) {
+            cities.push({
+                city:
+                    remainingCities[
+                        Math.floor(Math.random() * remainingCities.length)
+                    ],
+                answer: randomCity,
+            });
+        }
+        setCityChoices(cities);
+
+        console.log(cities);
+    };
+
     return (
         <div>
             <div>
@@ -87,7 +111,18 @@ const App = (props) => {
                 </LoadScript>
             </div>
             <div>
-                <button onClick={props.incrementScore}>{props.score}</button>
+                {cityChoices
+                    ? cityChoices.map((item) => {
+                          return (
+                              <CityButton
+                                  key={item.city}
+                                  cityName={item.city}
+                                  answer={item.answer}
+                              />
+                          );
+                      })
+                    : ""}
+                <h3>{props.score}</h3>
             </div>
         </div>
     );
@@ -97,8 +132,8 @@ const mapStateToProps = (state, props) => ({
     score: state.score,
 });
 
-const mapDispatchToProps = (dispatch, props) => ({
-    incrementScore: () => dispatch(incrementScore()),
-});
+// const mapDispatchToProps = (dispatch, props) => ({
+//     incrementScore: () => dispatch(incrementScore()),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
