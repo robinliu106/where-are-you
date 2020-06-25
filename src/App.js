@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import generateRandomPoint from "./api/generateRandomPoint";
-import util from "util";
+import { connect } from "react-redux";
+import { incrementScore } from "./actions/scoreAction";
 
 import {
     StreetViewService,
@@ -39,7 +40,7 @@ const initialCenter = {
     lng: -71.0691937,
 };
 
-const App = () => {
+const App = (props) => {
     const [cityCoords, setCityCoords] = useState();
 
     useEffect(() => {
@@ -64,25 +65,40 @@ const App = () => {
         );
     };
     return (
-        <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-        >
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                zoom={7}
-                initialCenter={initialCenter}
-            >
-                <StreetViewPanorama
-                    position={cityCoords}
-                    visible={true}
-                    options={{
-                        disableDefaultUI: true,
-                        enableCloseButton: false,
-                    }}
-                />
-            </GoogleMap>
-        </LoadScript>
+        <div>
+            <div>
+                <LoadScript
+                    googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+                >
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        zoom={7}
+                        initialCenter={initialCenter}
+                    >
+                        <StreetViewPanorama
+                            position={cityCoords}
+                            visible={true}
+                            options={{
+                                disableDefaultUI: true,
+                                enableCloseButton: false,
+                            }}
+                        />
+                    </GoogleMap>
+                </LoadScript>
+            </div>
+            <div>
+                <button onClick={props.incrementScore}>{props.score}</button>
+            </div>
+        </div>
     );
 };
 
-export default App;
+const mapStateToProps = (state, props) => ({
+    score: state.score,
+});
+
+const mapDispatchToProps = (dispatch, props) => ({
+    incrementScore: () => dispatch(incrementScore()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
