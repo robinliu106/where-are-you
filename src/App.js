@@ -25,10 +25,6 @@ const cityList = [
     "Hong Kong",
 ];
 
-// cityCoords();
-
-/////////
-
 const containerStyle = {
     height: "400px",
     width: "800px",
@@ -46,8 +42,7 @@ const App = (props) => {
 
     useEffect(() => {
         getCityCoords();
-        // setToggleStreetView(!!props.reloadStreetView);
-    }, []);
+    }, [props.score]);
 
     const getCityCoords = () => {
         const randomCity =
@@ -143,7 +138,6 @@ const App = (props) => {
 
 const mapStateToProps = (state, props) => ({
     score: state.score,
-    reloadStreetView: state.reloadStreetView,
 });
 
 // const mapDispatchToProps = (dispatch, props) => ({
