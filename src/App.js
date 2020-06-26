@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
-
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import "./App.css";
-import { generateRandomPoint, shuffleArray } from "./api/methods";
 import { connect } from "react-redux";
-import CityButton from "./components/CityButton";
 import {
-    StreetViewService,
     StreetViewPanorama,
     GoogleMap,
     LoadScript,
 } from "@react-google-maps/api";
-
-/////////////////////
 import Geocode from "react-geocode";
+
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import "./App.css";
+import { generateRandomPoint, shuffleArray } from "./api/methods";
+import CityButton from "./components/CityButton";
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
 
@@ -90,9 +88,11 @@ const App = (props) => {
 
         setCityChoices(shuffleArray(cities));
     };
+
+    //Change color based on score
     let scoreColor = "green";
 
-    scoreColor = props.score < 0 ? "red" : "green";
+    scoreColor = props.score < 0 ? "#DC143C" : "green";
 
     const scoreStyle = {
         color: scoreColor,
@@ -105,8 +105,6 @@ const App = (props) => {
                 <Col md={4}>
                     <h1 style={{ padding: "1rem" }}>Where are you?</h1>
                 </Col>
-
-                <Col></Col>
             </Row>
             <Row>
                 <LoadScript
