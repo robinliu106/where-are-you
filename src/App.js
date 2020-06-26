@@ -81,7 +81,7 @@ const App = (props) => {
         const cities = [];
         cities.push({ city: randomCity, answer: randomCity });
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 3; i++) {
             cities.push({
                 city: shuffledRemainingCities[i],
                 answer: randomCity,
@@ -103,12 +103,10 @@ const App = (props) => {
         <Container>
             <Row>
                 <Col md={4}>
-                    <h1>Where are you?</h1>
+                    <h1 style={{ padding: "1rem" }}>Where are you?</h1>
                 </Col>
+
                 <Col></Col>
-                <Col md={{ span: 2.5, offset: 5 }}>
-                    <h3 style={scoreStyle}>{`Streak ${props.score}`}</h3>
-                </Col>
             </Row>
             <Row>
                 <LoadScript
@@ -133,23 +131,25 @@ const App = (props) => {
                     </GoogleMap>
                 </LoadScript>
             </Row>
-
-            <Row>
-                <Col></Col>
-
-                {cityChoices
-                    ? cityChoices.map((item) => {
-                          return (
-                              <CityButton
-                                  key={item.city}
-                                  cityName={item.city}
-                                  answer={item.answer}
-                              />
-                          );
-                      })
-                    : ""}
-                <Col></Col>
-            </Row>
+            <div className="city-choices">
+                <Row>
+                    {cityChoices
+                        ? cityChoices.map((item) => {
+                              return (
+                                  <CityButton
+                                      key={item.city}
+                                      cityName={item.city}
+                                      answer={item.answer}
+                                  />
+                              );
+                          })
+                        : ""}
+                    <Col></Col>
+                    <Col md={{ span: 2.5 }}>
+                        <h3 style={scoreStyle}>{`Streak ${props.score}`}</h3>
+                    </Col>
+                </Row>
+            </div>
         </Container>
     );
 };
