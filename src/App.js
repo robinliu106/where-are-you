@@ -92,7 +92,7 @@ const App = (props) => {
     //Change color based on score
     let scoreColor = "green";
 
-    scoreColor = props.score < 0 ? "#DC143C" : "green";
+    // scoreColor = props.score < 0 ? "#DC143C" : "green";
 
     const scoreStyle = {
         color: scoreColor,

@@ -1,6 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { incrementScore, decrementScore } from "../actions/scoreAction";
+import {
+    incrementScore,
+    decrementScore,
+    resetScore,
+} from "../actions/scoreAction";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 
@@ -11,7 +15,8 @@ const CityButton = (props) => {
         if (result === "true") {
             props.incrementScore();
         } else {
-            props.decrementScore();
+            // props.decrementScore();
+            props.resetScore();
         }
     };
 
@@ -36,6 +41,7 @@ const CityButton = (props) => {
 const mapDispatchToProps = (dispatch, props) => ({
     incrementScore: () => dispatch(incrementScore()),
     decrementScore: () => dispatch(decrementScore()),
+    resetScore: () => dispatch(resetScore()),
 });
 
 export default connect(undefined, mapDispatchToProps)(CityButton);
