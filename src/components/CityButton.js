@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { incrementScore, decrementScore } from "../actions/scoreAction";
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 
 const CityButton = (props) => {
     const handleClick = (e) => {
@@ -18,7 +19,7 @@ const CityButton = (props) => {
         window.location.reload(false);
     };
     return (
-        <>
+        <Col>
             <Button
                 variant="outline-primary"
                 size="lg"
@@ -28,7 +29,7 @@ const CityButton = (props) => {
             >
                 {props.cityName}
             </Button>
-        </>
+        </Col>
     );
 };
 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
+import "./App.css";
 import { generateRandomPoint, shuffleArray } from "./api/methods";
 import { connect } from "react-redux";
 import CityButton from "./components/CityButton";
@@ -30,6 +30,13 @@ const cityList = [
     "Sydney",
     "Cairo",
     "Moscow",
+    "New York",
+    "Quito",
+    "San Sebastian",
+    "Niseko",
+    "Los Angeles",
+    "Zermatt",
+    "Berlin",
 ];
 
 const containerStyle = {
@@ -40,7 +47,6 @@ const containerStyle = {
 const App = (props) => {
     const [cityCoords, setCityCoords] = useState();
     const [cityChoices, setCityChoices] = useState();
-    const [toggleStreetView, setToggleStreetView] = useState();
 
     useEffect(() => {
         generateCityCoords();
@@ -88,8 +94,12 @@ const App = (props) => {
     return (
         <Container>
             <Row>
-                <Col>
-                    <h1>Where in the world</h1>
+                <Col md={4}>
+                    <h1>Where are you?</h1>
+                </Col>
+                <Col></Col>
+                <Col md={{ span: 2.5, offset: 5 }}>
+                    <h3>{`Score: ${props.score}`}</h3>
                 </Col>
             </Row>
             <Row>
@@ -115,25 +125,22 @@ const App = (props) => {
                     </GoogleMap>
                 </LoadScript>
             </Row>
+
             <Row>
+                <Col></Col>
+
                 {cityChoices
                     ? cityChoices.map((item) => {
                           return (
-                              <Col>
-                                  <CityButton
-                                      key={item.city}
-                                      cityName={item.city}
-                                      answer={item.answer}
-                                  />
-                              </Col>
+                              <CityButton
+                                  key={item.city}
+                                  cityName={item.city}
+                                  answer={item.answer}
+                              />
                           );
                       })
                     : ""}
-            </Row>
-            <Row>
-                <Col>
-                    <h3>{`Score: ${props.score}`}</h3>
-                </Col>
+                <Col></Col>
             </Row>
         </Container>
     );
