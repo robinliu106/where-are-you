@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import generateRandomPoint from "./api/generateRandomPoint";
+
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import { generateRandomPoint, shuffleArray } from "./api/methods";
 import { connect } from "react-redux";
 import CityButton from "./components/CityButton";
 import {
@@ -18,21 +21,20 @@ Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
 
 const cityList = [
     "Tokyo",
-    "Singapore",
     "Boston",
-    "Washington DC",
-    "Mexico City",
     "Hong Kong",
+    "Riyadh",
+    "Barcelona",
+    "Paris",
+    "Rome",
+    "Sydney",
+    "Cairo",
+    "Moscow",
 ];
 
 const containerStyle = {
-    height: "400px",
-    width: "800px",
-};
-
-const initialCenter = {
-    lat: 42.3517071,
-    lng: -71.0691937,
+    height: "80vh",
+    width: "80vw",
 };
 
 const App = (props) => {
@@ -41,18 +43,18 @@ const App = (props) => {
     const [toggleStreetView, setToggleStreetView] = useState();
 
     useEffect(() => {
-        getCityCoords();
+        generateCityCoords();
     }, [props.score]);
 
-    const getCityCoords = () => {
+    const generateCityCoords = () => {
         const randomCity =
             cityList[Math.floor(Math.random() * cityList.length)];
-        console.log("city", randomCity);
+
         Geocode.fromAddress(randomCity).then(
             (response) => {
                 const { lat, lng } = response.results[0].geometry.location;
 
-                const randomPoint = generateRandomPoint({ lat, lng }, 100);
+                let randomPoint = generateRandomPoint({ lat, lng }, 100);
 
                 setCityCoords(randomPoint);
                 generateCityChoices(randomCity);
@@ -63,22 +65,12 @@ const App = (props) => {
         );
     };
 
-    const shuffleCityList = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * i);
-            const temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
-        return array;
-    };
-
     const generateCityChoices = (randomCity) => {
         const remainingCities = cityList.filter((city) => {
             return city !== randomCity;
         });
 
-        const shuffledRemainingCities = shuffleCityList(remainingCities);
+        const shuffledRemainingCities = shuffleArray(remainingCities);
 
         const cities = [];
         cities.push({ city: randomCity, answer: randomCity });
@@ -89,23 +81,29 @@ const App = (props) => {
                 answer: randomCity,
             });
         }
-        setCityChoices(cities);
 
-        console.log(cities);
+        setCityChoices(shuffleArray(cities));
     };
 
     return (
-        <div>
-            <div>
+        <Container>
+            <Row>
+                <Col>
+                    <h1>Where in the world</h1>
+                </Col>
+            </Row>
+            <Row>
                 <LoadScript
                     googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
                 >
                     <GoogleMap
                         mapContainerStyle={containerStyle}
                         zoom={7}
-                        initialCenter={initialCenter}
+                        initialCenter={{
+                            lat: 42.3517071,
+                            lng: -71.0691937,
+                        }}
                     >
-                        (
                         <StreetViewPanorama
                             position={cityCoords}
                             visible={true}
@@ -114,25 +112,30 @@ const App = (props) => {
                                 enableCloseButton: false,
                             }}
                         />
-                        )
                     </GoogleMap>
                 </LoadScript>
-            </div>
-            <div>
+            </Row>
+            <Row>
                 {cityChoices
                     ? cityChoices.map((item) => {
                           return (
-                              <CityButton
-                                  key={item.city}
-                                  cityName={item.city}
-                                  answer={item.answer}
-                              />
+                              <Col>
+                                  <CityButton
+                                      key={item.city}
+                                      cityName={item.city}
+                                      answer={item.answer}
+                                  />
+                              </Col>
                           );
                       })
                     : ""}
-                <h3>{props.score}</h3>
-            </div>
-        </div>
+            </Row>
+            <Row>
+                <Col>
+                    <h3>{`Score: ${props.score}`}</h3>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
@@ -145,3 +148,15 @@ const mapStateToProps = (state, props) => ({
 // });
 
 export default connect(mapStateToProps)(App);
+
+/*
+
+  <StreetViewPanorama
+                            position={cityCoords}
+                            visible={true}
+                            options={{
+                                disableDefaultUI: true,
+                                enableCloseButton: false,
+                            }}
+                        />
+*/

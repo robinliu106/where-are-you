@@ -1,4 +1,4 @@
-const generateRandomPoint = (center, radius) => {
+export const generateRandomPoint = (center, radius) => {
     var x0 = center.lng;
     var y0 = center.lat;
     // Convert Radius from meters to degrees.
@@ -15,9 +15,20 @@ const generateRandomPoint = (center, radius) => {
     var xp = x / Math.cos(y0);
 
     // Resulting point.
-    return { lat: y + y0, lng: xp + x0 };
+    return {
+        lat: parseFloat((y + y0).toFixed(6)),
+        lng: parseFloat((xp + x0).toFixed(6)),
+    };
 };
 
 // console.log(generateRandomPoint({ lat: 42.391102, lng: -71.146218 }, 100));
 
-export default generateRandomPoint;
+export const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * i);
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+};

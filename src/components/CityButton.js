@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { incrementScore, decrementScore } from "../actions/scoreAction";
+import Button from "react-bootstrap/Button";
 
 const CityButton = (props) => {
     const handleClick = (e) => {
@@ -17,13 +18,17 @@ const CityButton = (props) => {
         window.location.reload(false);
     };
     return (
-        <button
-            key={props.cityName}
-            value={props.cityName === props.answer}
-            onClick={handleClick}
-        >
-            {props.cityName}
-        </button>
+        <>
+            <Button
+                variant="outline-primary"
+                size="lg"
+                key={props.cityName}
+                value={props.cityName === props.answer}
+                onClick={handleClick}
+            >
+                {props.cityName}
+            </Button>
+        </>
     );
 };
 
