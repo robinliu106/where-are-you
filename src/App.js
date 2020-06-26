@@ -90,6 +90,14 @@ const App = (props) => {
 
         setCityChoices(shuffleArray(cities));
     };
+    let scoreColor = "green";
+
+    scoreColor = props.score < 0 ? "red" : "green";
+
+    const scoreStyle = {
+        color: scoreColor,
+        align: "right",
+    };
 
     return (
         <Container>
@@ -99,7 +107,7 @@ const App = (props) => {
                 </Col>
                 <Col></Col>
                 <Col md={{ span: 2.5, offset: 5 }}>
-                    <h3>{`Score: ${props.score}`}</h3>
+                    <h3 style={scoreStyle}>{`Streak ${props.score}`}</h3>
                 </Col>
             </Row>
             <Row>
@@ -155,15 +163,3 @@ const mapStateToProps = (state, props) => ({
 // });
 
 export default connect(mapStateToProps)(App);
-
-/*
-
-  <StreetViewPanorama
-                            position={cityCoords}
-                            visible={true}
-                            options={{
-                                disableDefaultUI: true,
-                                enableCloseButton: false,
-                            }}
-                        />
-*/
